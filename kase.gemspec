@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'kase/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "kase"
+  spec.name          = "hosh-kase"
   spec.version       = Kase::VERSION
   spec.authors       = ["Lasse Skindstad Ebert"]
   spec.email         = ["lasse@lasseebert.dk"]
