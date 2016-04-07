@@ -2,7 +2,7 @@ require "kase/errors"
 
 module Kase
   class Switcher
-    def initialize(*values)
+    def initialize(values)
       if values.size == 1 && values.first.is_a?(Array)
         values = values.first
       end
@@ -10,8 +10,7 @@ module Kase
       @matched = false
     end
 
-    attr_reader :values
-    attr_reader :result
+    attr_reader :values, :context, :result
 
     def matched?
       !!@matched
@@ -21,11 +20,11 @@ module Kase
       values[0...pattern.size] == pattern
     end
 
-    def on(*pattern)
+    def on(pattern, context, &blk)
       return if matched?
       return unless match?(*pattern)
       @matched = true
-      @result = yield(*values[pattern.size..-1])
+      @result = context.instance_exec(*values[pattern.size..-1], &blk)
     end
 
     def validate!
@@ -49,7 +48,7 @@ module Kase
       end
 
       def on(*args, &block)
-        @switcher.on(*args, &block)
+        @switcher.on(args, @context, &block)
       end
 
       def method_missing(method, *args, &block)
